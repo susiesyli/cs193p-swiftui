@@ -8,17 +8,45 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis = ["💐", "🌿", "✨", "🪷", "🎄", "🪸", "🌸", "🍀"]
+    let xmas = ["🎄", "🦌", "✨", "❄️", "☃️", "🍪", "🍫", "🪵"]
+    let animals = ["🐶", "🐱", "🦊", "🐻", "🐼", "🐸", "🐵", "🐯"]
+    let nature = ["💐", "🌿", "✨", "🪷", "🎄", "🪸", "🌸", "🍀"]
+    
+    @State var currentTheme = ["🎄", "🦌", "✨", "❄️", "☃️", "🍪", "🍫", "🪵"]
     @State var cardCount = 4
+    
     var body: some View {
         VStack {
+            Text("Memorize!").font(.largeTitle)
             ScrollView{
                 cards
             }
             Spacer()
+            themeButtons
+            Spacer()
             cardCountAdjusters
         }
         .padding()
+    }
+    
+    var themeButtons: some View {
+        HStack {
+            Button("xmas") {
+                currentTheme = xmas
+            }
+            //.cornerRadius(10)
+            
+            Button("animals") {
+                currentTheme = animals
+            }
+            //.cornerRadius(10)
+            
+            Button("nature") {
+                currentTheme = nature
+            }
+            //.cornerRadius(10)
+        }
+        .font(.title3)
     }
     
     var cardCountAdjusters: some View {
@@ -34,7 +62,7 @@ struct ContentView: View {
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) {
             ForEach(0..<cardCount, id: \.self) { index in
-                CardView(content: emojis[index])
+                CardView(content: currentTheme[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
         }
@@ -47,7 +75,7 @@ struct ContentView: View {
         }, label: {
             Image(systemName: symbol)
         })
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
+        .disabled(cardCount + offset < 1 || cardCount + offset > currentTheme.count)
     }
     
     var cardRemover: some View {
