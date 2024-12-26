@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    let xmas =    ["🎄","🎄","🦌","🦌","✨","✨","❄️","❄️","☃️","☃️","🍪","🍪","🍫","🍫","🪵","🪵"]
-    let animals = ["🐶","🐶","🐱","🐱","🦊","🦊","🐻","🐻","🐼","🐼","🐸","🐸","🐯","🐯"]
-    let nature =  ["💐","💐","🌿","🌿","✨","✨","🪷","🪷","🎄","🎄","🪸","🪸","🌸","🌸","🍀","🍀","☁️","☁️"]
+struct EmojiMemoryGameView: View {
+    @ObservedObject var viewModel: EmojiMemoryGame
+    
+    let xmas =    ["🎄","🦌","✨","❄️","☃️","🍪","🍫","🪵"]
+    let animals = ["🐶","🐱","🦊","🐻","🐼","🐸","🐯"]
+    let nature =  ["💐","🌿","✨","🪷","🎄","🪸","🌸","🍀","☁️"]
     
     @State var emojis = [""] // initalize as empty
     @State var cardCount = 0 // initalize as empty
@@ -20,6 +22,9 @@ struct ContentView: View {
             Text("Memorize!").font(.largeTitle)
             ScrollView{
                 cards
+            }
+            Button("Shuffle") {
+                viewModel.shuffle()
             }
             Spacer()
             themeButtons
@@ -92,13 +97,14 @@ struct ContentView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]) {
-            ForEach(0..<cardCount, id: \.self) { index in
-                CardView(content: emojis[index])
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
+            ForEach(viewModel.cards.indices, id: \.self) { index in
+                CardView(card: viewModel.cards[index])
                     .aspectRatio(2/3, contentMode: .fit)
+                    .padding(4)
             }
         }
-        .foregroundColor(.orange)
+        .foregroundColor(.green)
     }
     
     func cardCountAdjusters(by offset: Int, symbol: String) -> some View {
@@ -120,8 +126,7 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    let content: String
-    @State var isFaceUp = false
+    let card: MemoryGame<String>.Card
     
     var body: some View {
         ZStack {
@@ -129,20 +134,20 @@ struct CardView: View {
             Group {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
-                Text(content).font(.largeTitle)
+                Text(card.content)
+                    .font(.system(size: 200))
+                    .minimumScaleFactor(0.01)
+                    .aspectRatio(1, contentMode: .fit)
             }
-            .opacity(isFaceUp ? 1 : 0)
-            base.fill().opacity(isFaceUp ? 0 : 1)
-
-        }.onTapGesture {
-            isFaceUp.toggle() // toggle() switches bool
+                .opacity(card.isFaceUp ? 1 : 0)
+            base.fill()
+                .opacity(card.isFaceUp ? 0 : 1)
         }
     }
 }
 
-
-struct ContentView_Previews: PreviewProvider {
+struct EmojiMemoryGameView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
     }
 }
