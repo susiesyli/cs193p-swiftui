@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  EmojiMemoryGameView.swift
 //  Memorize
 //
 //  Created by Susie Li on 12/21/24.
@@ -10,123 +10,87 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
-    let xmas =    ["🎄","🦌","✨","❄️","☃️","🍪","🍫","🪵"]
-    let animals = ["🐶","🐱","🦊","🐻","🐼","🐸","🐯"]
-    let nature =  ["💐","🌿","✨","🪷","🎄","🪸","🌸","🍀","☁️"]
-    
-    @State var emojis = [""] // initalize as empty
-    @State var cardCount = 0 // initalize as empty
-    
     var body: some View {
         VStack {
-            Text("Memorize!").font(.largeTitle)
+            gameTitle
+            themeTitle
+            
             ScrollView{
-                cards
+                cards.animation(.default, value: viewModel.cards )
             }
-            Button("Shuffle") {
-                viewModel.shuffle()
+            
+            HStack {
+                newGameButton
+                Spacer()
+                showScore
+                Spacer()
+                shuffleButton
             }
-            Spacer()
-            themeButtons
-            //Spacer()
-            //cardCountAdjusters
-        }
-        .onAppear {
-            selectTheme(theme: nature)
+            .foregroundColor(viewModel.theme.color)
         }
         .padding()
     }
     
-    var themeButtons: some View {
-        HStack {
-            VStack{
-                Image(systemName: "snow")
-                    .font(.title)
-                Text("xmas")
-                    .font(.headline)
-                    .frame(alignment: .bottom)
-            }
-            .onTapGesture {
-                selectTheme(theme: xmas)
-            }
-            .frame(alignment: .bottom)
-            .padding(.horizontal, 20)
-            
-            VStack{
-                Image(systemName: "pawprint.fill")
-                    .font(.title)
-                Text("animals")
-                    .font(.headline)
-                    .frame(alignment: .bottom)
-            }
-            .onTapGesture {
-                selectTheme(theme: animals)
-            }
-            .frame(alignment: .bottom)
-            .padding(.horizontal, 20)
-            
-            VStack{
-                Image(systemName: "cloud.fill")
-                    .font(.title)
-                Text("nature")
-                    .font(.headline)
-                    .frame(alignment: .bottom)
-            }
-            .onTapGesture {
-                selectTheme(theme: nature)
-            }
-            .frame(alignment: .bottom)
-            .padding(.horizontal, 20)
-        }
-        .foregroundColor(.accentColor)
+    var gameTitle: some View {
+        Text("Memorize!").font(.largeTitle).foregroundColor(viewModel.theme.accentColor)
     }
     
-    func selectTheme(theme: [String]) {
-        emojis = theme.shuffled()
-        cardCount = theme.count
+    var themeTitle: some View {
+        Text(viewModel.theme.name)
+            .font(.title2)
+            .foregroundColor(viewModel.theme.color)
     }
     
-    var cardCountAdjusters: some View {
-        HStack{
-            cardRemover
-            Spacer()
-            cardAdder
-        }
-        .imageScale(.large)
-        .font(.largeTitle)
+    var newGameButton: some View {
+        Button(action: {
+            viewModel.newGame()
+        }, label: {
+            VStack(spacing: 5) {
+                Image(systemName:"plus.circle.fill")
+                    .font(.largeTitle)
+                Text("New Game")
+            }
+        })
     }
     
+    var showScore: some View {
+        Text("Score: \(viewModel.score)")
+            .font(.title)
+            .foregroundColor(viewModel.theme.accentColor)
+    }
+    
+    var shuffleButton: some View {
+        Button(action: {
+            viewModel.shuffle()
+        }, label: {
+            VStack(spacing: 5) {
+                Image(systemName: "shuffle.circle.fill").font(.largeTitle)
+                Text("Shuffle")
+            }
+        })
+    }
+
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
-            ForEach(viewModel.cards.indices, id: \.self) { index in
-                CardView(card: viewModel.cards[index])
+            ForEach(viewModel.cards) { card in
+                CardView(card)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
             }
         }
-        .foregroundColor(.green)
-    }
-    
-    func cardCountAdjusters(by offset: Int, symbol: String) -> some View {
-        Button(action: {
-            cardCount += offset
-        }, label: {
-            Image(systemName: symbol)
-        })
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
-    }
-    
-    var cardRemover: some View {
-        cardCountAdjusters(by: -1, symbol: "rectangle.stack.badge.minus.fill")
-    }
-    
-    var cardAdder: some View {
-        cardCountAdjusters(by: 1, symbol: "rectangle.stack.badge.plus.fill")
+        .foregroundColor(viewModel.theme.color)
     }
 }
 
 struct CardView: View {
     let card: MemoryGame<String>.Card
+    
+    init(_ card: MemoryGame<String>.Card) {
+        self.card = card
+    }
     
     var body: some View {
         ZStack {
