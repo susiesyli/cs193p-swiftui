@@ -6,8 +6,8 @@
 | 2. More SwiftUI                | [Lecture Notes](Lecture_Notes/Week2.md) | [Memory Game](Code/Week2_MemoryGame/)       |
 | 3. MVVM Architecture           | [Lecture Notes](Lecture_Notes/Week3.md) | [Networking Project](Code/Week3_Networking/)|
 | 4. Applying MVVM to Memorize   | ...                       | ...                                | ...                                |
-| 5. Protocols, enum, Optional   | ...                       | ...                                | ...                                |
-| 6. Layout, @ViewBuilder   | ...                       | ...                                | ...                                |
+| 5. Protocols, enum, Optional   | ...                        ...                                | ...                                |
+| 6. Layout, @ViewBuilder            | ...                       | ...                                | ...                                |
 | 7. Shape, ViewModifier, Constants   | ...                       | ...                                | ...                                |
 | 8. Animation (Part 1)   | ...                       | ...                                | ...                                |
 | 9. Animation (Part 2)   | ...                       | ...                                | ...                                |
