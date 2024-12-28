@@ -51,9 +51,9 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                         cards[potentialMatchIndex].isMatched = true
                         cards[chosenIndex].isFaceUp = true
                         cards[potentialMatchIndex].isFaceUp = true
-                        score += 1
+                        score += 2 // award 2 points for every match, whether or not the cards involved have been “previously seen”
                     } else if cards[chosenIndex].flipCount > 1 || cards[potentialMatchIndex].flipCount > 1 {
-                        score -= 1
+                        score -= 1 // penalize 1 point for every previously seen card that is involved in a mismatch
                     }
                 } else {
                     otherCard = chosenIndex

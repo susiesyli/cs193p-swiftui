@@ -20,14 +20,14 @@ let themes: [Theme] = [
         name: "Christmas",
         emojis: ["🎄","🦌","✨","❄️","☃️","🍪","🍫","🪵"],
         color: .red,
-        accentColor: .red,
+        accentColor: .green,
         numberOfPairs: 8),
     Theme(
         name: "Nature",
-        emojis: ["💐","🌿","✨","🪷","🎄","🪸","🌸","🍀","☁️"],
+        emojis: ["💐","🌿","✨","🪷","🪸","🌸","🍀","☁️"],
         color: .green,
-        accentColor: .red,
-        numberOfPairs: 9),
+        accentColor: .blue,
+        numberOfPairs: 8),
     Theme(
         name: "Animals",
         emojis: ["🐶","🐱","🦊","🐻","🐼","🐸","🐯"],
@@ -36,20 +36,20 @@ let themes: [Theme] = [
         numberOfPairs: 7),
     Theme(
         name: "Dessert",
-        emojis: ["🍞","🍦","🧁","🍩","🍡","🍪","🍮","🥞","🍵","🍨","🍰"],
-        color: .pink,
-        accentColor: .red,
-        numberOfPairs: 11   ),
+        emojis: ["🍞","🍦","🧁","🍩","🍡","🍪","🍬","🍮","🥞","🍵","🍨","🍰"],
+        color: .yellow,
+        accentColor: .pink,
+        numberOfPairs: 8),
     Theme(
         name: "Food",
-        emojis: ["🦪","🍜","🍲","🥘","🍘","🍙","🍥","🍬","🌮","🌭","🥗","🍳"],
-        color: .white,
+        emojis: ["🦪","🍜","🍲","🥘","🍘","🍙","🍥","🌮","🌭","🥗","🍳"],
+        color: .yellow,
         accentColor: .red,
-        numberOfPairs: 12),
+        numberOfPairs: 8),
     Theme(
         name: "Halloween",
         emojis: ["👻","🎃","🕷","☠️","👽","🦹‍♀️","🦇","🌘","🔮"],
         color: .orange,
         accentColor: .red,
-        numberOfPairs: 9)
+        numberOfPairs: 8)
 ]
